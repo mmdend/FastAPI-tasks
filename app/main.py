@@ -1,5 +1,12 @@
 from fastapi import FastAPI
 
+from app import models  # noqa: F401 (for ruff)
+from app.database import Base, engine
+from app.routers import tasks
+
+# Create the tables if they do not exist.
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title="Task Manager API",
     description=(
@@ -13,6 +20,8 @@ app = FastAPI(
         "email": "mmdend.dev@gmail.com",
     },
 )
+
+app.include_router(tasks.router)
 
 
 @app.get("/", tags=["health"])
