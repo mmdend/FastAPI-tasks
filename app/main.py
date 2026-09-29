@@ -1,13 +1,24 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+from app import models  # noqa: F401 (for ruff)
+from app.database import Base, engine
+from app.routers import tasks
 
+# Create the tables if they do not exist.
+Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+app = FastAPI(
+    title="Task Manager API",
+    description=(
+        "A simple and efficient Todo management API built with FastAPI. "
+        "This API allows users to create, retrieve, update, and delete tasks. "
+    ),
+    version="1.0.0",
+    contact={
+        "name": "Mohammad (Mehrad) Mousapour",
+        "url": "https://github.com/mmdend/FastAPI-tasks",
+        "email": "mmdend.dev@gmail.com",
+    },
+)
 
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str | None = None):
-    return {"item_id": item_id, "q": q}
+app.include_router(tasks.router)
