@@ -1,13 +1,62 @@
+import random
+
 from fastapi import FastAPI
 
 app = FastAPI()
 
 
+names_db = [
+    {"id": 1, "name": "ali"},
+    {"id": 2, "name": "maryam"},
+    {"id": 3, "name": "arousha"},
+]
+
+# testing fast api
+
+
+# GET
+@app.get("/names")
+def names_list():
+    return names_db
+
+
+# GET a specific item
+@app.get("/names/{item_id}")
+def names_detail(item_id: int):
+    for name in names_db:
+        if name["id"] == item_id:
+            return name
+    return {"message": "Name not found"}
+
+
+# POST
+@app.post("/names")
+def names_create(name: str):
+    new_name = {"id": random.randint(4, 100), "name": name}
+    names_db.append(new_name)
+    return new_name
+
+
+# PUT
+@app.put("/names/{item_id}")
+def names_update(item_id: int, name: str):
+    for n in names_db:
+        if n["id"] == item_id:
+            n["name"] = name
+            return {"message": f"Name with ID {item_id} updated successfully"}
+    return {"message": "Name not found"}
+
+
+# DELETE
+@app.delete("/names/{item_id}")
+def names_delete(item_id: int):
+    for i, n in enumerate(names_db):
+        if n["id"] == item_id:
+            del names_db[i]
+            return {"message": f"Name with ID {item_id} deleted successfully"}
+    return {"message": "Name not found"}
+
+
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str | None = None):
-    return {"item_id": item_id, "q": q}
+    return {"message": "Hello World"}
