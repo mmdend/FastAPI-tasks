@@ -43,7 +43,9 @@ fastar==0.12.0
     #   fastapi
     #   fastapi-cloud-cli
 gunicorn==26.2.0
-    # via fastapi-tasks
+    # via
+    #   fastapi-tasks
+    #   uvicorn-worker
 h11==0.16.0
     # via
     #   httpcore
@@ -139,6 +141,9 @@ uvicorn==0.54.0
     #   fastapi
     #   fastapi-cli
     #   fastapi-cloud-cli
+    #   uvicorn-worker
+uvicorn-worker==0.4.0
+    # via fastapi-tasks
 uvloop==0.22.1 ; platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32'
     # via uvicorn
 watchfiles==1.3.0
