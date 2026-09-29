@@ -16,7 +16,7 @@ app = FastAPI(
     version="1.0.0",
     contact={
         "name": "Mohammad (Mehrad) Mousapour",
-        "url": "https://http://github.com/mmdend",
+        "url": "https://github.com/mmdend/FastAPI-tasks",
         "email": "mmdend.dev@gmail.com",
     },
 )
