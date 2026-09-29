@@ -22,3 +22,7 @@ app = FastAPI(
 )
 
 app.include_router(tasks.router)
+
+@app.get("/")
+def health_check():
+    return {"message": "go to /docs for API documentation"}

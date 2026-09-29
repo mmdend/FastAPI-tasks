@@ -58,23 +58,24 @@ Table "public.tasks"
 Indexes:
     "tasks_pkey" PRIMARY KEY, btree (id)
 
-
 ## Local setup
 
 1. Start PostgreSQL (example with Docker, change the credentials):
 
+> Replace the placeholder values with your own PostgreSQL credentials and volume name.
+
 ```bash
-docker run -d --name tasks-postgres \
-  -e POSTGRES_USER=<user> \
-  -e POSTGRES_PASSWORD=<password> \
-  -e POSTGRES_DB=tasks_db \
+docker run -d --name <CONTAINER_NAME> \
+  -e POSTGRES_USER=<POSTGRES_USER> \
+  -e POSTGRES_PASSWORD=<POSTGRES_PASSWORD> \
+  -e POSTGRES_DB=<POSTGRES_DB> \
   -p 5432:5432 \
-  -v tasks_pgdata:/var/lib/postgresql/data \
+  -v <VOLUME_NAME>:/var/lib/postgresql/data \
   postgres:16
 ```
 
 
-2. Install dependencies:
+1. Install dependencies:
 
 ```bash
 uv sync
