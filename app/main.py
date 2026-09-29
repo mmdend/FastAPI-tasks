@@ -14,9 +14,14 @@ names_db = [
 # testing fast api
 
 
-# GET
+# GET (search with query parameter)
 @app.get("/names")
-def names_list():
+def names_list(search: str | None = None):
+    if search:
+        filtered_names = [
+            name for name in names_db if search.lower() in name["name"].lower()
+        ]
+        return filtered_names
     return names_db
 
 
