@@ -1,7 +1,18 @@
-import random
-
 from fastapi import FastAPI
 
+app = FastAPI(
+    title="Task Manager API",
+    description="A simple CRUD API for tasks, built with FastAPI and PostgreSQL.",
+    version="1.0.0",
+)
+
+
+@app.get("/", tags=["health"])
+def health_check():
+    return {"status": "ok"}
+
+
+"""
 app = FastAPI()
 
 
@@ -65,3 +76,4 @@ def names_delete(item_id: int):
 @app.get("/")
 def read_root():
     return {"message": "Hello World"}
+"""

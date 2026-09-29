@@ -3,11 +3,10 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from app.config import settings
 
-# The engine manages the connection pool to PostgreSQL
-engine = create_engine(settings.database_url, pool_pre_ping=True)
+engine = create_engine(settings.database_url)
 
-# Each request gets its own session created from this factory
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+# A factory that creates a new session per request
+SessionLocal = sessionmaker(bind=engine)
 
 
 class Base(DeclarativeBase):
