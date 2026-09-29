@@ -33,3 +33,19 @@ def get_task(task_id: int, db: SessionDep):
 @router.post("/", response_model=schemas.TaskRead, status_code=status.HTTP_201_CREATED)
 def create_task(data: schemas.TaskCreate, db: SessionDep):
     return crud.create_task(db, data)
+
+
+@router.put("/{task_id}", response_model=schemas.TaskRead)
+def update_task(task_id: int, data: schemas.TaskUpdate, db: SessionDep):
+    task = crud.get_task(db, task_id)
+    if task is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return crud.update_task(db, task, data)
+
+
+@router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_task(task_id: int, db: SessionDep):
+    task = crud.get_task(db, task_id)
+    if task is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+    crud.delete_task(db, task)
