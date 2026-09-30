@@ -7,6 +7,7 @@
 <a href="https://www.python.org" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a>
 <a href="https://fastapi.tiangolo.com/" target="_blank"> <img src="https://styles.redditmedia.com/t5_22y58b/styles/communityIcon_r5ax236rfw961.png" alt="fastapi" width="40" height="40"/> </a>
 <a href="https://www.postgresql.org" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="40" height="40"/> </a>
+<a href="https://www.docker.com/" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="docker" width="40" height="40"/> </a>
 <a href="https://swagger.io/" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/swagger/swagger-original.svg" alt="swagger" width="40" height="40"/> </a>
 <a href="https://docs.astral.sh/uv/" target="_blank"> <img src="https://cdn.simpleicons.org/uv" alt="uv" width="40" height="40"/> </a>
 <a href="https://git-scm.com/" target="_blank"> <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> </a>
@@ -22,6 +23,12 @@
 - [Database schema](#database-schema)
 - [Local setup](#local-setup)
 - [Quick test](#quick-test)
+- [Docker Local Setup](#docker-local-setup)
+  - [1. Create the environment file](#1-create-the-environment-file)
+  - [2. Build and start the containers](#2-build-and-start-the-containers)
+  - [3. Check the containers](#3-check-the-containers)
+  - [4. Access the API](#4-access-the-api)
+  - [5. Stop the application](#5-stop-the-application)
 - [Deployment (Ubuntu 24.04, Gunicorn + Uvicorn worker + systemd)](#deployment-ubuntu-2404-gunicorn--uvicorn-worker--systemd)
   - [1. Install system packages](#1-install-system-packages)
   - [2. Configure the firewall](#2-configure-the-firewall)
@@ -138,6 +145,90 @@ curl -X POST http://127.0.0.1:8000/tasks/ \
 
 curl http://127.0.0.1:8000/tasks/
 ```
+
+## Docker Local Setup
+
+The project can be run locally using Docker Compose. The Compose setup starts both the FastAPI application and PostgreSQL database.
+
+### 1. Create the environment file
+
+Create a `.env` file in the project root:
+
+```env
+POSTGRES_USER=<POSTGRES_USER>
+POSTGRES_PASSWORD=<POSTGRES_PASSWORD>
+POSTGRES_DB=<POSTGRES_DB>
+```
+
+> Replace the values with your own credentials.
+
+### 2. Build and start the containers
+
+Run:
+
+```bash
+docker compose up -d --build
+```
+
+This will:
+
+- Build the FastAPI image from the `Dockerfile`.
+- Start a PostgreSQL 16 container.
+- Wait for PostgreSQL to become healthy before starting the API.
+- Create a persistent Docker volume for PostgreSQL data.
+- Start the FastAPI application on port `8000`.
+
+### 3. Check the containers
+
+```bash
+docker compose ps
+```
+
+Both `db` and `api` should be running.
+
+To view the API logs:
+
+```bash
+docker compose logs -f api
+```
+
+To view the PostgreSQL logs:
+
+```bash
+docker compose logs -f db
+```
+
+### 4. Access the API
+
+The API is available at:
+
+```text
+http://127.0.0.1:8000
+```
+
+Interactive API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### 5. Stop the application
+
+To stop the containers:
+
+```bash
+docker compose down
+```
+
+The PostgreSQL data remains stored in the `pgdata` Docker volume.
+
+To stop the containers and remove the database volume as well:
+
+```bash
+docker compose down -v
+```
+
+> **Warning:** Removing the volume deletes the PostgreSQL data stored by the Compose setup.
 
 ## Deployment (Ubuntu 24.04, Gunicorn + Uvicorn worker + systemd)
 
